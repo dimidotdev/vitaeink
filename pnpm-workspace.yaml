@@ -1,0 +1,8 @@
+allowBuilds:
+  esbuild: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - jsdom@30.0.1
+  - miniflare@4.20260722.1
+  - wrangler@4.115.0
+  - pdfjs-dist@6.2.108

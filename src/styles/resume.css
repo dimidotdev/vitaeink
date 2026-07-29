@@ -1,0 +1,65 @@
+.preview-shell { min-height: 100%; }
+.preview-toolbar { display: flex; justify-content: space-between; min-height: 3rem; padding: var(--space-sm) var(--space-lg); border-bottom: 1px solid var(--color-border); color: var(--color-muted); font-size: 0.78rem; }
+.preview-host { min-height: calc(100vh - var(--header-height) - 3rem); padding: var(--space-xl) var(--space-md) 5rem; overflow: auto; }
+.preview-stage { position: relative; margin: 0 auto; }
+.preview-transform { position: absolute; top: 0; left: 0; transform-origin: top left; }
+
+.resume-document {
+  --resume-section-gap: 5.5mm;
+  --resume-entry-gap: 3.5mm;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 14mm 16mm 15mm;
+  overflow: visible;
+  background: #ffffff;
+  box-shadow: var(--shadow-page);
+  color: #24211e;
+  font-family: "Inter Variable", Inter, Arial, sans-serif;
+  font-size: var(--resume-font-size);
+  line-height: var(--resume-line-height);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.resume-document.page-letter { width: 215.9mm; min-height: 279.4mm; }
+.resume-document.font-ibm-plex { font-family: "IBM Plex Sans Variable", "IBM Plex Sans", Arial, sans-serif; }
+.resume-document.font-source-serif { font-family: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif; }
+.resume-document.density-compact { --resume-section-gap: 3.7mm; --resume-entry-gap: 2.4mm; }
+.resume-document.density-spacious { --resume-section-gap: 7mm; --resume-entry-gap: 4.5mm; }
+
+.resume-document * { box-sizing: border-box; }
+.resume-document h1, .resume-document h2, .resume-document h3, .resume-document p, .resume-document ul { margin-top: 0; }
+.resume-document p { margin-bottom: 2mm; }
+.resume-document a { color: inherit; text-decoration-color: color-mix(in srgb, var(--resume-accent) 55%, transparent); text-underline-offset: 0.12em; }
+.resume-header { padding-bottom: 5mm; border-bottom: 0.35mm solid var(--resume-accent); }
+.resume-header h1 { margin-bottom: 1.5mm; font-size: 25pt; line-height: 1.05; letter-spacing: -0.035em; }
+.resume-headline { margin-bottom: 2.5mm !important; color: #4f4a44; font-size: 11.5pt; font-weight: 550; }
+.resume-header address { font-style: normal; }
+.contact-list { display: flex; flex-wrap: wrap; gap: 0.8mm 2.8mm; margin: 0; padding: 0; color: #4f4a44; font-size: 8.7pt; list-style: none; }
+.contact-list li + li::before { margin-right: 2.8mm; color: var(--resume-accent); content: "·"; }
+
+.resume-section { margin-top: var(--resume-section-gap); }
+.resume-section > h2 { margin-bottom: 2.5mm; color: var(--resume-accent); font-size: 9.2pt; font-weight: 760; letter-spacing: 0.025em; line-height: 1.2; text-transform: uppercase; }
+.resume-entry + .resume-entry { margin-top: var(--resume-entry-gap); }
+.entry-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 5mm; break-after: avoid; }
+.entry-heading h3 { margin-bottom: 0.8mm; font-size: 11pt; line-height: 1.25; }
+.entry-date { flex: 0 0 auto; margin-bottom: 0 !important; color: #5f5952; font-size: 8.5pt; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.entry-context { margin-bottom: 1.5mm !important; color: #4f4a44; font-size: 9.2pt; }
+.resume-highlights { margin-bottom: 0; padding-left: 4.2mm; }
+.resume-highlights li { margin-bottom: 0.8mm; padding-left: 0.6mm; }
+.resume-highlights li::marker { color: var(--resume-accent); }
+.simple-list { display: grid; gap: 1.1mm; }
+.simple-list p { margin: 0; }
+
+.template-editorial .resume-header { border-bottom-width: 0.2mm; }
+.template-editorial .resume-header h1 { font-family: "Source Serif 4 Variable", Georgia, serif; font-weight: 620; }
+.template-editorial .resume-section > h2 { border-bottom: 0.2mm solid color-mix(in srgb, var(--resume-accent) 40%, #ffffff); padding-bottom: 1.3mm; font-family: "Source Serif 4 Variable", Georgia, serif; font-size: 11pt; letter-spacing: 0.02em; text-transform: none; }
+.template-compact { padding: 11mm 14mm 12mm; }
+.template-compact .resume-header { padding-bottom: 3.5mm; }
+.template-compact .resume-header h1 { font-size: 22pt; }
+.template-compact .resume-section > h2 { margin-bottom: 1.8mm; }
+.template-compact .resume-highlights li { margin-bottom: 0.35mm; }
+
+@media (max-width: 62rem) {
+  .preview-toolbar { position: sticky; top: calc(var(--header-height) + 3.75rem); z-index: 5; background: var(--color-canvas); }
+  .preview-host { min-height: calc(100vh - 8rem); padding-top: var(--space-lg); }
+}

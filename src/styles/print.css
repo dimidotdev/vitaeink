@@ -1,0 +1,46 @@
+@media print {
+  html, body, #root, .app-shell, .workspace, .workspace-preview, .preview-shell, .preview-host, .preview-stage, .preview-transform {
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .no-print { display: none !important; }
+  .workspace, .workspace-preview, .preview-shell { display: block !important; }
+  .resume-document {
+    position: static !important;
+    width: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  .preview-transform { position: static !important; transform: none !important; }
+  .resume-section > h2 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+  .resume-entry, .certification-entry, .simple-list p {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+  .entry-heading, .entry-context {
+    break-after: avoid-page;
+    break-inside: avoid-page;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  .resume-highlights { orphans: 2; widows: 2; }
+  .resume-highlights li {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+  .resume-section { break-inside: auto; }
+  .resume-document a { color: inherit !important; text-decoration: none; }
+}

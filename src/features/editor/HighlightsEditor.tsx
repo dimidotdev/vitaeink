@@ -1,0 +1,35 @@
+import { TextAreaField } from './fields'
+
+interface HighlightsEditorProps {
+  values: string[]
+  onChange: (values: string[]) => void
+  label?: string
+  maxEntries: number
+}
+
+export const HighlightsEditor = ({ values, onChange, label = 'Outcome', maxEntries }: HighlightsEditorProps) => {
+  const updateAt = (index: number, value: string): void => {
+    const next = [...values]
+    next[index] = value
+    onChange(next)
+  }
+  const removeAt = (index: number): void => { onChange(values.filter((_, itemIndex) => itemIndex !== index)) }
+
+  return (
+    <fieldset className="highlights-editor">
+      <legend>Evidence and outcomes</legend>
+      <p className="field-help">Use concise bullets. Lead with the action and state the factual result.</p>
+      {values.map((value, index) => (
+        <div className="highlight-row" key={`${label}-${index}`}>
+          <TextAreaField label={`${label} ${index + 1}`} value={value} rows={3} onChange={(next) => { updateAt(index, next) }} />
+          <button type="button" className="button button-quiet" onClick={() => { removeAt(index) }} aria-label={`Remove ${label.toLowerCase()} ${index + 1}`}>
+            Remove
+          </button>
+        </div>
+      ))}
+      <button type="button" className="button button-secondary" disabled={values.length >= maxEntries} onClick={() => { if (values.length < maxEntries) onChange([...values, '']) }}>
+        Add outcome
+      </button>
+    </fieldset>
+  )
+}
