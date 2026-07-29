@@ -1,3 +1,5 @@
+import { RiAddLine, RiDeleteBinLine } from '@remixicon/react'
+import { Button } from '../../components/ui/button'
 import { TextAreaField } from './fields'
 
 interface HighlightsEditorProps {
@@ -22,14 +24,14 @@ export const HighlightsEditor = ({ values, onChange, label = 'Outcome', maxEntri
       {values.map((value, index) => (
         <div className="highlight-row" key={`${label}-${index}`}>
           <TextAreaField label={`${label} ${index + 1}`} value={value} rows={3} onChange={(next) => { updateAt(index, next) }} />
-          <button type="button" className="button button-quiet" onClick={() => { removeAt(index) }} aria-label={`Remove ${label.toLowerCase()} ${index + 1}`}>
-            Remove
-          </button>
+          <Button type="button" variant="destructive" size="icon" onClick={() => { removeAt(index) }} aria-label={`Remove ${label.toLowerCase()} ${index + 1}`} title="Remove outcome">
+            <RiDeleteBinLine aria-hidden="true" />
+          </Button>
         </div>
       ))}
-      <button type="button" className="button button-secondary" disabled={values.length >= maxEntries} onClick={() => { if (values.length < maxEntries) onChange([...values, '']) }}>
-        Add outcome
-      </button>
+      <Button type="button" variant="outline" className="add-outcome" disabled={values.length >= maxEntries} onClick={() => { if (values.length < maxEntries) onChange([...values, '']) }}>
+        <RiAddLine aria-hidden="true" /> Add outcome
+      </Button>
     </fieldset>
   )
 }

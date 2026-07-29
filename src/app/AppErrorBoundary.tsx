@@ -1,4 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { RiRestartLine } from '@remixicon/react'
+import { Button } from '../components/ui/button'
 
 interface Props { children: ReactNode }
 interface State { failed: boolean }
@@ -21,9 +23,9 @@ export class AppErrorBoundary extends Component<Props, State> {
         <img src="/icons/vitaeink.svg" alt="" width="48" height="48" />
         <h1>VitaeInk needs a fresh start</h1>
         <p>Your saved resume remains in this browser. Reload the page to try again.</p>
-        <button type="button" className="button button-primary" onClick={() => { window.location.reload() }}>
-          Reload VitaeInk
-        </button>
+        <Button type="button" size="lg" onClick={() => { window.location.reload() }}>
+          <RiRestartLine aria-hidden="true" /> Reload VitaeInk
+        </Button>
       </main>
     )
   }

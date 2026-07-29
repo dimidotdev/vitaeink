@@ -1,4 +1,6 @@
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { blankCertification } from '../../../domain/factories'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EditableDetails } from '../EditableDetails'
@@ -25,6 +27,6 @@ export const CertificationsEditor = ({ document, update }: CertificationsEditorP
         </div>
       </EditableDetails>
     ))}
-    <button type="button" className="button button-secondary add-entry" disabled={document.certifications.length >= RESUME_LIMITS.certifications} onClick={() => { update((draft) => { if (draft.certifications.length < RESUME_LIMITS.certifications) draft.certifications.push(blankCertification()) }) }}>Add certification</button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.certifications.length >= RESUME_LIMITS.certifications} onClick={() => { update((draft) => { if (draft.certifications.length < RESUME_LIMITS.certifications) draft.certifications.push(blankCertification()) }) }}><RiAddLine aria-hidden="true" /> Add certification</Button>
   </div>
 )

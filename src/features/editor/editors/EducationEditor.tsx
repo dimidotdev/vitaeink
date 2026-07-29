@@ -1,4 +1,6 @@
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { blankEducation } from '../../../domain/factories'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EditableDetails } from '../EditableDetails'
@@ -29,6 +31,6 @@ export const EducationEditor = ({ document, update }: EducationEditorProps) => (
         </div>
       </EditableDetails>
     ))}
-    <button type="button" className="button button-secondary add-entry" disabled={document.education.length >= RESUME_LIMITS.education} onClick={() => { update((draft) => { if (draft.education.length < RESUME_LIMITS.education) draft.education.push(blankEducation()) }) }}>Add education</button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.education.length >= RESUME_LIMITS.education} onClick={() => { update((draft) => { if (draft.education.length < RESUME_LIMITS.education) draft.education.push(blankEducation()) }) }}><RiAddLine aria-hidden="true" /> Add education</Button>
   </div>
 )

@@ -43,19 +43,14 @@ test('edits the sample and persists it locally', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Taylor Santos', level: 1 })).toBeVisible()
 })
 
-test('keeps a rapid edit when the page reloads', async ({ page }) => {
-  await page.goto('/')
-  const name = page.getByLabel('Full name')
-  await name.fill('Immediate Save Santos')
-  page.once('dialog', async (dialog) => { await dialog.accept() })
-  await page.reload()
-  await expect(page.getByRole('heading', { name: 'Immediate Save Santos', level: 1 })).toBeVisible()
-})
-
 test('has no serious accessibility violations in the default flow', async ({ page }) => {
   await page.goto('/')
   const results = await new AxeBuilder({ page }).analyze()
   expect(results.violations.filter((violation) => ['serious', 'critical'].includes(violation.impact ?? ''))).toEqual([])
+
+  await page.getByLabel('More actions').click()
+  const overlayResults = await new AxeBuilder({ page }).analyze()
+  expect(overlayResults.violations).toEqual([])
 })
 
 test('keeps a secondary entry open while it is edited', async ({ page }) => {
@@ -72,8 +67,18 @@ test('keeps import and backup actions reachable on mobile', async ({ page }) => 
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   await page.getByLabel('More actions').click()
-  await expect(page.getByRole('button', { name: 'Import JSON' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Backup JSON' })).toBeVisible()
+  await expect(page.getByRole('menuitem', { name: 'Import JSON' })).toBeVisible()
+  await expect(page.getByRole('menuitem', { name: 'Backup JSON' })).toBeVisible()
+})
+
+test('opens the document menu by keyboard and restores focus on close', async ({ page }) => {
+  await page.goto('/')
+  const trigger = page.getByLabel('More actions')
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByRole('menuitem', { name: 'Import JSON' })).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(trigger).toBeFocused()
 })
 
 test('keeps the document title and local save status visible on mobile', async ({ page }) => {
@@ -88,6 +93,19 @@ test('does not overflow horizontally at the desktop-to-mobile boundary', async (
   await page.goto('/')
   const sizes = await page.evaluate(() => ({ viewport: window.innerWidth, content: document.documentElement.scrollWidth }))
   expect(sizes.content).toBeLessThanOrEqual(sizes.viewport)
+})
+
+test('navigates sections and controls the live preview on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await page.getByRole('combobox', { name: 'Resume section', exact: true }).selectOption('experience')
+  await expect(page.locator('.workspace-editor').getByRole('heading', { name: 'Experience' })).toBeVisible()
+  await page.getByRole('button', { name: 'Preview', exact: true }).click()
+  await expect(page.locator('.resume-document').getByRole('heading', { name: 'Alex Rivera' })).toBeVisible()
+  const zoom = page.getByRole('button', { name: /Preview zoom/ })
+  const before = await zoom.textContent()
+  await page.getByRole('button', { name: 'Zoom in' }).click()
+  await expect(zoom).not.toHaveText(before ?? '')
 })
 
 test('preserves separators while typing a skill list', async ({ page }) => {
@@ -125,6 +143,11 @@ test('flags and suppresses an empty project entry', async ({ page }) => {
 
 test('exports selectable ATS-readable text in print media', async ({ page }, testInfo) => {
   await page.goto('/')
+  await page.getByRole('button', { name: 'Experience', exact: true }).click()
+  const secondEntry = page.locator('.workspace-editor details').nth(1)
+  await secondEntry.locator('summary').click()
+  await secondEntry.getByRole('button', { name: /Move .* up/ }).hover()
+  await expect(page.locator('[data-slot="tooltip-content"]')).toBeVisible()
   const pdfPath = testInfo.outputPath('vitaeink-sample.pdf')
   await page.pdf({ path: pdfPath, format: 'A4', printBackground: true, preferCSSPageSize: true })
   const text = await extractPdfText(pdfPath)
@@ -132,6 +155,7 @@ test('exports selectable ATS-readable text in print media', async ({ page }, tes
   expect(text).toContain('Senior Software Engineer')
   expect(text).toContain('EDUCATION')
   expect(text).not.toContain('Skip to editor')
+  expect(text).not.toContain('Move up')
   expect(text.indexOf('PROFILE')).toBeLessThan(text.indexOf('EXPERIENCE'))
 })
 

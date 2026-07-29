@@ -19,3 +19,9 @@ Each font is licensed under the SIL Open Font License, Version 1.1:
 > THE FONT SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
 
 The full license is included at [`licenses/OFL-1.1.txt`](licenses/OFL-1.1.txt) and in each installed `@fontsource-variable/*` package.
+
+## Remix Icon
+
+VitaeInk uses individual interface icons from [Remix Icon](https://remixicon.com) through `@remixicon/react`.
+
+Copyright © 2017–2026 Remix Design. The icons are licensed under the [Remix Icon License v1.0](https://github.com/Remix-Design/RemixIcon/blob/master/License). They remain governed by that license and are used only as functional interface elements; the VitaeInk logo and application icon are original assets and do not use Remix Icon artwork.

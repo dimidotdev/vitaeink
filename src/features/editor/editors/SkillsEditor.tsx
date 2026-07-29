@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { blankSkill } from '../../../domain/factories'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EntryActions } from '../EntryActions'
@@ -50,6 +52,6 @@ export const SkillsEditor = ({ document, update }: SkillsEditorProps) => (
         <EntryActions label={entry.name || `skill group ${index + 1}`} index={index} total={document.skills.length} onMove={(direction) => { update((draft) => { moveEntry(draft.skills, index, direction) }) }} onDelete={() => { update((draft) => { draft.skills.splice(index, 1) }) }} />
       </div>
     ))}
-    <button type="button" className="button button-secondary add-entry" disabled={document.skills.length >= RESUME_LIMITS.skills} onClick={() => { update((draft) => { if (draft.skills.length < RESUME_LIMITS.skills) draft.skills.push(blankSkill()) }) }}>Add skill group</button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.skills.length >= RESUME_LIMITS.skills} onClick={() => { update((draft) => { if (draft.skills.length < RESUME_LIMITS.skills) draft.skills.push(blankSkill()) }) }}><RiAddLine aria-hidden="true" /> Add skill group</Button>
   </div>
 )

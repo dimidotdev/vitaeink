@@ -1,4 +1,6 @@
+import { RiRestartLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { contrastOnWhite } from '../../../domain/documentChecks'
 import { defaultSettings } from '../../../domain/factories'
 import { sectionLabel } from '../../../domain/presentation'
@@ -61,7 +63,7 @@ export const AppearanceEditor = ({ document, update }: AppearanceEditorProps) =>
           </div>
         ))}
       </fieldset>
-      <button type="button" className="button button-quiet reset-design" onClick={() => { if (window.confirm('Reset all design settings? Your content will not change.')) update((draft) => { draft.settings = defaultSettings() }) }}>Reset design settings</button>
+      <Button type="button" variant="ghost" size="lg" className="reset-design" onClick={() => { if (window.confirm('Reset all design settings? Your content will not change.')) update((draft) => { draft.settings = defaultSettings() }) }}><RiRestartLine aria-hidden="true" /> Reset design settings</Button>
     </div>
   )
 }

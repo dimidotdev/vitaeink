@@ -1,4 +1,6 @@
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { blankProject } from '../../../domain/factories'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EditableDetails } from '../EditableDetails'
@@ -40,6 +42,6 @@ export const ProjectsEditor = ({ document, update }: ProjectsEditorProps) => (
         </div>
       </EditableDetails>
     ))}
-    <button type="button" className="button button-secondary add-entry" disabled={document.projects.length >= RESUME_LIMITS.projects} onClick={() => { update((draft) => { if (draft.projects.length < RESUME_LIMITS.projects) draft.projects.push(blankProject()) }) }}>Add project</button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.projects.length >= RESUME_LIMITS.projects} onClick={() => { update((draft) => { if (draft.projects.length < RESUME_LIMITS.projects) draft.projects.push(blankProject()) }) }}><RiAddLine aria-hidden="true" /> Add project</Button>
   </div>
 )

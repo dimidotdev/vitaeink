@@ -1,4 +1,6 @@
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EntryActions } from '../EntryActions'
 import { moveEntry } from '../editorUtils'
@@ -47,9 +49,9 @@ export const ProfileEditor = ({ document, update }: ProfileEditorProps) => {
             />
           </div>
         ))}
-        <button type="button" className="button button-secondary" disabled={basics.links.length >= RESUME_LIMITS.links} onClick={() => { update((draft) => { if (draft.basics.links.length < RESUME_LIMITS.links) draft.basics.links.push({ id: `link-${crypto.randomUUID()}`, label: '', url: '' }) }) }}>
-          Add link
-        </button>
+        <Button type="button" variant="outline" size="lg" className="add-entry" disabled={basics.links.length >= RESUME_LIMITS.links} onClick={() => { update((draft) => { if (draft.basics.links.length < RESUME_LIMITS.links) draft.basics.links.push({ id: `link-${crypto.randomUUID()}`, label: '', url: '' }) }) }}>
+          <RiAddLine aria-hidden="true" /> Add link
+        </Button>
       </fieldset>
     </div>
   )

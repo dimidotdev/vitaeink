@@ -1,4 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { RiAddLine, RiFullscreenLine, RiSubtractLine } from '@remixicon/react'
+import { Button } from '../../components/ui/button'
 import type { ResumeDocument } from '../../domain/resume'
 import { ResumeRenderer } from './ResumeRenderer'
 
@@ -15,14 +17,16 @@ const PAGE_DIMENSIONS = {
 export const PreviewPane = ({ document, onPageCountChange }: PreviewPaneProps) => {
   const hostRef = useRef<HTMLDivElement>(null)
   const pageRef = useRef<HTMLElement>(null)
-  const [scale, setScale] = useState(1)
+  const [fitScale, setFitScale] = useState(1)
+  const [manualScale, setManualScale] = useState<number>()
+  const scale = manualScale ?? fitScale
   const [scaledHeight, setScaledHeight] = useState<number>(PAGE_DIMENSIONS[document.settings.pageSize].height)
   const dimensions = PAGE_DIMENSIONS[document.settings.pageSize]
 
   useLayoutEffect(() => {
     const host = hostRef.current
     if (!host) return undefined
-    const updateScale = (): void => { setScale(Math.min(1, Math.max(0.3, (host.clientWidth - 32) / dimensions.width))) }
+    const updateScale = (): void => { setFitScale(Math.min(1, Math.max(0.3, (host.clientWidth - 32) / dimensions.width))) }
     updateScale()
     const observer = new ResizeObserver(updateScale)
     observer.observe(host)
@@ -40,9 +44,21 @@ export const PreviewPane = ({ document, onPageCountChange }: PreviewPaneProps) =
     return () => { window.cancelAnimationFrame(frame) }
   }, [document, dimensions.height, onPageCountChange, scale])
 
+  const changeZoom = (delta: number): void => {
+    setManualScale(Math.min(1.25, Math.max(0.3, Number((scale + delta).toFixed(2)))))
+  }
+
   return (
     <section className="preview-shell" aria-label="Live resume preview">
-      <div className="preview-toolbar no-print"><span>Live preview</span><span>{document.settings.pageSize} · {Math.round(scale * 100)}%</span></div>
+      <div className="preview-toolbar no-print">
+        <div className="preview-title"><span className="live-dot" aria-hidden="true" /> <span>Live preview</span><small>{document.settings.pageSize}</small></div>
+        <div className="preview-zoom" role="group" aria-label="Preview zoom">
+          <Button type="button" variant="ghost" size="icon-sm" aria-label="Zoom out" disabled={scale <= 0.3} onClick={() => { changeZoom(-0.1) }}><RiSubtractLine aria-hidden="true" /></Button>
+          <button type="button" className="zoom-value" aria-label={`Preview zoom ${Math.round(scale * 100)} percent. Fit to width`} onClick={() => { setManualScale(undefined) }}>{Math.round(scale * 100)}%</button>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label="Zoom in" disabled={scale >= 1.25} onClick={() => { changeZoom(0.1) }}><RiAddLine aria-hidden="true" /></Button>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label="Fit preview to width" onClick={() => { setManualScale(undefined) }}><RiFullscreenLine aria-hidden="true" /></Button>
+        </div>
+      </div>
       <div className="preview-host" ref={hostRef}>
         <div className="preview-stage" style={{ width: dimensions.width * scale, height: scaledHeight }}>
           <div className="preview-transform" style={{ transform: `scale(${scale})`, width: dimensions.width }}>

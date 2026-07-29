@@ -5,8 +5,8 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f2f0eb",
-  "theme_color": "#f2f0eb",
+  "background_color": "#f1f1ef",
+  "theme_color": "#f1f1ef",
   "icons": [
     {
       "src": "/icons/vitaeink.svg",

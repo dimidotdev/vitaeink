@@ -1,5 +1,7 @@
+import { RiArrowRightLine, RiDownload2Line } from '@remixicon/react'
 import type { DocumentIssue } from '../../../domain/documentChecks'
 import type { EditorSection } from '../../../components/SectionNav'
+import { Button } from '../../../components/ui/button'
 
 interface CheckEditorProps {
   issues: DocumentIssue[]
@@ -15,7 +17,7 @@ export const CheckEditor = ({ issues, pageCount, onSelect, onPrint }: CheckEdito
       <h2>Document check</h2>
       <p>These are practical checks, not an invented “ATS score.” No tool can guarantee every employer’s parser.</p>
     </div>
-    <div className="check-summary" role="status">
+    <div className={issues.length === 0 ? 'check-summary' : 'check-summary check-summary-warning'} role="status">
       <strong>{issues.length === 0 ? 'Ready for a human review' : `${issues.length} finding${issues.length === 1 ? '' : 's'} to review`}</strong>
       <span>Estimated length: {pageCount} page{pageCount === 1 ? '' : 's'}</span>
     </div>
@@ -25,9 +27,9 @@ export const CheckEditor = ({ issues, pageCount, onSelect, onPrint }: CheckEdito
           <li key={issue.id} className={`issue issue-${issue.level}`}>
             <div><span>{issue.level}</span><strong>{issue.title}</strong><p>{issue.detail}</p></div>
             {issue.section !== 'document' && (
-              <button type="button" className="button button-quiet" onClick={() => { if (issue.section !== 'document') onSelect(issue.section) }}>
-                Review section
-              </button>
+              <Button type="button" variant="ghost" onClick={() => { if (issue.section !== 'document') onSelect(issue.section) }}>
+                Review section <RiArrowRightLine aria-hidden="true" />
+              </Button>
             )}
           </li>
         ))}
@@ -41,6 +43,6 @@ export const CheckEditor = ({ issues, pageCount, onSelect, onPrint }: CheckEdito
       <h3>Before saving the PDF</h3>
       <ol><li>Choose “Save as PDF” in the print dialog.</li><li>Disable browser headers and footers.</li><li>Keep scale at 100% and use the selected paper size.</li></ol>
     </div>
-    <button type="button" className="button button-primary check-export" onClick={onPrint}>Open print dialog</button>
+    <Button type="button" size="lg" className="check-export" onClick={onPrint}><RiDownload2Line aria-hidden="true" /> Open print dialog</Button>
   </div>
 )

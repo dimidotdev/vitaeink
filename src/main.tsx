@@ -5,6 +5,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './app/App'
 import { AppErrorBoundary } from './app/AppErrorBoundary'
+import { TooltipProvider } from './components/ui/tooltip'
+import './styles/shadcn.css'
 import './styles/tokens.css'
 import './styles/global.css'
 import './styles/layout.css'
@@ -18,7 +20,9 @@ if (!root) throw new Error('Application root was not found.')
 createRoot(root).render(
   <StrictMode>
     <AppErrorBoundary>
-      <App />
+      <TooltipProvider>
+        <App />
+      </TooltipProvider>
     </AppErrorBoundary>
   </StrictMode>,
 )

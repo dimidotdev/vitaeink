@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react'
+import { RiArrowDownSLine, RiCloseLine, RiEditLine, RiEyeLine } from '@remixicon/react'
 import { AppHeader } from '../components/AppHeader'
-import { SectionNav, type EditorSection } from '../components/SectionNav'
+import { SectionNav } from '../components/SectionNav'
+import { NAV_ITEMS, type EditorSection } from '../components/sectionNavItems'
+import { Button } from '../components/ui/button'
 import { runDocumentChecks } from '../domain/documentChecks'
 import { downloadResumeJson, importResumeFile, printResume } from './fileActions'
 import { EditorPanel } from '../features/editor/EditorPanel'
@@ -59,13 +62,25 @@ export const App = () => {
       {(error || notice) && (
         <div className={error ? 'app-notice notice-error no-print' : 'app-notice no-print'} role="status" aria-live="polite">
           <span>{error ?? notice}</span>
-          {notice && <button type="button" aria-label="Dismiss notification" onClick={() => { setNotice(undefined) }}>×</button>}
+          {notice && <Button type="button" variant="ghost" size="icon-sm" aria-label="Dismiss notification" onClick={() => { setNotice(undefined) }}><RiCloseLine aria-hidden="true" /></Button>}
         </div>
       )}
-      <div className="mobile-pane-switch no-print" role="group" aria-label="Mobile workspace view">
-        <button type="button" aria-pressed={mobilePane === 'editor'} className={mobilePane === 'editor' ? 'active' : undefined} onClick={() => { setMobilePane('editor') }}>Edit</button>
-        <button type="button" aria-pressed={mobilePane === 'preview'} className={mobilePane === 'preview' ? 'active' : undefined} onClick={() => { setMobilePane('preview') }}>Preview</button>
-      </div>
+      <nav className="mobile-workspace-bar no-print" aria-label="Mobile workspace">
+        <div className="mobile-pane-switch" role="group" aria-label="Mobile workspace view">
+          <Button type="button" variant={mobilePane === 'editor' ? 'secondary' : 'ghost'} aria-pressed={mobilePane === 'editor'} className={mobilePane === 'editor' ? 'active' : undefined} onClick={() => { setMobilePane('editor') }}><RiEditLine aria-hidden="true" /> Edit</Button>
+          <Button type="button" variant={mobilePane === 'preview' ? 'secondary' : 'ghost'} aria-pressed={mobilePane === 'preview'} className={mobilePane === 'preview' ? 'active' : undefined} onClick={() => { setMobilePane('preview') }}><RiEyeLine aria-hidden="true" /> Preview</Button>
+        </div>
+        {mobilePane === 'editor' && (
+          <label className="mobile-section-picker">
+            <span className="sr-only">Resume section</span>
+            <select name="mobile-resume-section" value={activeSection} onChange={(event) => { setActiveSection(event.target.value as EditorSection) }}>
+              {NAV_ITEMS.map((item) => <option key={item.key} value={item.key}>{item.label}</option>)}
+              <option value="check">Document check ({issues.length})</option>
+            </select>
+            <RiArrowDownSLine aria-hidden="true" />
+          </label>
+        )}
+      </nav>
       <div className={`workspace pane-${mobilePane}`}>
         <aside className="workspace-nav no-print"><SectionNav active={activeSection} issues={issues.length} onChange={selectSection} /></aside>
         <main id="editor-content" className="workspace-editor no-print" tabIndex={-1}>

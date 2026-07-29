@@ -10,6 +10,8 @@
 
 VitaeInk é um criador de currículos local-first. Ele abre com um exemplo completo, atualiza uma visualização HTML semântica enquanto você escreve e exporta texto selecionável por meio da impressão nativa do navegador. Não há conta, analytics, banco de dados na nuvem ou fontes externas.
 
+A interface do estúdio usa o preset Base Nova do shadcn/ui com primitivas Base UI. O currículo permanece isolado em HTML/CSS semântico para que a estética do painel não altere sua ordem de leitura por ATS ou a impressão.
+
 Use a versão pública em **[vitaeink.matheus-silva-74d.workers.dev](https://vitaeink.matheus-silva-74d.workers.dev)**. Ela executa o mesmo código aberto e mantém o conteúdo do currículo apenas no seu dispositivo.
 
 ## Principais capacidades
@@ -57,4 +59,4 @@ O VitaeInk melhora estrutura, legibilidade e extração, mas não promete “100
 
 ## Licença
 
-Código sob [Apache-2.0](LICENSE). Inter, IBM Plex Sans e Source Serif 4 usam SIL Open Font License 1.1; consulte os [avisos de terceiros](THIRD_PARTY_NOTICES.md).
+Código sob [Apache-2.0](LICENSE). As fontes incorporadas e os ícones de interface Remix Icon mantêm suas próprias licenças; consulte os [avisos de terceiros](THIRD_PARTY_NOTICES.md).

@@ -16,6 +16,8 @@
 
 VitaeInk is a local-first resume builder. It opens with a complete example, updates a real semantic HTML preview as you type, and exports selectable PDF text through the browser's native print engine. There are no accounts, analytics, cloud databases, or external font requests.
 
+The studio interface uses shadcn/ui's Base Nova preset with Base UI primitives. The resume renderer remains an isolated semantic HTML/CSS boundary so interface styling cannot change its ATS reading order or print output.
+
 Try the hosted version at **[vitaeink.matheus-silva-74d.workers.dev](https://vitaeink.matheus-silva-74d.workers.dev)**. The hosted studio uses the same public build and still stores resume content only on your device.
 
 ## Why VitaeInk
@@ -77,6 +79,7 @@ VitaeInk optimizes the document structure for automatic readers; it does not cla
 ```text
 src/domain/             versioned schema, presentation rules, document checks
 src/storage/            IndexedDB repository
+src/components/ui/      shadcn Base Nova interface primitives
 src/features/editor/    accessible structured editing
 src/features/preview/   shared semantic preview and print renderer
 src/styles/             application, document, and print styles
@@ -89,4 +92,4 @@ User content is rendered by React as text. VitaeInk does not accept custom HTML,
 
 ## License
 
-VitaeInk is licensed under [Apache-2.0](LICENSE). Inter, IBM Plex Sans, and Source Serif 4 are bundled under the SIL Open Font License 1.1; see [third-party notices](THIRD_PARTY_NOTICES.md).
+VitaeInk is licensed under [Apache-2.0](LICENSE). Bundled fonts and Remix Icon interface symbols retain their own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md).

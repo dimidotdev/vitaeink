@@ -1,4 +1,6 @@
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { blankExperience } from '../../../domain/factories'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EditableDetails } from '../EditableDetails'
@@ -39,8 +41,8 @@ export const ExperienceEditor = ({ document, update }: ExperienceEditorProps) =>
         </div>
       </EditableDetails>
     ))}
-    <button type="button" className="button button-secondary add-entry" disabled={document.experience.length >= RESUME_LIMITS.experience} onClick={() => { update((draft) => { if (draft.experience.length < RESUME_LIMITS.experience) draft.experience.push(blankExperience()) }) }}>
-      Add experience
-    </button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.experience.length >= RESUME_LIMITS.experience} onClick={() => { update((draft) => { if (draft.experience.length < RESUME_LIMITS.experience) draft.experience.push(blankExperience()) }) }}>
+      <RiAddLine aria-hidden="true" /> Add experience
+    </Button>
   </div>
 )

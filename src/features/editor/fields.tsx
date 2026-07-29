@@ -42,7 +42,8 @@ export const TextField = ({ label, value, onChange, help, placeholder, type = 't
         name={name ?? id}
         type={type}
         placeholder={placeholder}
-        autoComplete={autoComplete}
+        autoComplete={autoComplete ?? 'off'}
+        spellCheck={type === 'email' || type === 'url' ? false : undefined}
         inputMode={inputMode}
         maxLength={maxLength}
         aria-describedby={describedBy}
@@ -74,6 +75,7 @@ export const TextAreaField = ({ label, value, onChange, help, rows = 4, placehol
         value={value}
         rows={rows}
         placeholder={placeholder}
+        autoComplete="off"
         maxLength={maxLength}
         aria-describedby={describedBy}
         onChange={(event) => { onChange(event.target.value) }}
@@ -93,7 +95,7 @@ interface SelectFieldProps {
 export const SelectField = ({ label, value, onChange, options, help }: SelectFieldProps) => (
   <FieldShell label={label} help={help}>
     {(id, describedBy) => (
-      <select id={id} value={value} aria-describedby={describedBy} onChange={(event) => { onChange(event.target.value) }}>
+      <select id={id} name={id} value={value} autoComplete="off" aria-describedby={describedBy} onChange={(event) => { onChange(event.target.value) }}>
         {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
       </select>
     )}
@@ -110,7 +112,7 @@ export const CheckboxField = ({ label, checked, onChange }: CheckboxFieldProps) 
   const id = useId()
   return (
     <div className="checkbox-field">
-      <input id={id} type="checkbox" checked={checked} onChange={(event) => { onChange(event.target.checked) }} />
+      <input id={id} name={id} type="checkbox" checked={checked} onChange={(event) => { onChange(event.target.checked) }} />
       <label htmlFor={id}>{label}</label>
     </div>
   )
@@ -130,7 +132,7 @@ export const RangeField = ({ label, value, min, max, step, suffix = '', onChange
   <FieldShell label={label}>
     {(id) => (
       <div className="range-control">
-        <input id={id} type="range" value={value} min={min} max={max} step={step} onChange={(event) => { onChange(event.target.valueAsNumber) }} />
+        <input id={id} name={id} type="range" value={value} min={min} max={max} step={step} onChange={(event) => { onChange(event.target.valueAsNumber) }} />
         <output htmlFor={id}>{value}{suffix}</output>
       </div>
     )}

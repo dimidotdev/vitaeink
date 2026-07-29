@@ -1,4 +1,6 @@
+import { RiAddLine } from '@remixicon/react'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
+import { Button } from '../../../components/ui/button'
 import { blankLanguage } from '../../../domain/factories'
 import { RESUME_LIMITS, type ResumeDocument } from '../../../domain/resume'
 import { EntryActions } from '../EntryActions'
@@ -19,6 +21,6 @@ export const LanguagesEditor = ({ document, update }: LanguagesEditorProps) => (
         <EntryActions label={entry.name || `language ${index + 1}`} index={index} total={document.languages.length} onMove={(direction) => { update((draft) => { moveEntry(draft.languages, index, direction) }) }} onDelete={() => { update((draft) => { draft.languages.splice(index, 1) }) }} />
       </div>
     ))}
-    <button type="button" className="button button-secondary add-entry" disabled={document.languages.length >= RESUME_LIMITS.languages} onClick={() => { update((draft) => { if (draft.languages.length < RESUME_LIMITS.languages) draft.languages.push(blankLanguage()) }) }}>Add language</button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.languages.length >= RESUME_LIMITS.languages} onClick={() => { update((draft) => { if (draft.languages.length < RESUME_LIMITS.languages) draft.languages.push(blankLanguage()) }) }}><RiAddLine aria-hidden="true" /> Add language</Button>
   </div>
 )
