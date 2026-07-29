@@ -8,12 +8,15 @@
 
 <p align="center">
   <a href="README.pt-BR.md">Português</a> ·
+  <a href="https://vitaeink.matheus-silva-74d.workers.dev">Live studio</a> ·
   <a href="#run-locally">Run locally</a> ·
   <a href="docs/SELF_HOSTING.md">Self-hosting</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
 VitaeInk is a local-first resume builder. It opens with a complete example, updates a real semantic HTML preview as you type, and exports selectable PDF text through the browser's native print engine. There are no accounts, analytics, cloud databases, or external font requests.
+
+Try the hosted version at **[vitaeink.matheus-silva-74d.workers.dev](https://vitaeink.matheus-silva-74d.workers.dev)**. The hosted studio uses the same public build and still stores resume content only on your device.
 
 ## Why VitaeInk
 

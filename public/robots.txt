@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://vitaeink.matheus-silva-74d.workers.dev/sitemap.xml
