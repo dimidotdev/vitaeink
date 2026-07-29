@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="README.pt-BR.md">Português</a> ·
-  <a href="https://vitaeink.matheus-silva-74d.workers.dev">Live studio</a> ·
+  <a href="https://vitaeink.dimi.dev.br">Live studio</a> ·
   <a href="#run-locally">Run locally</a> ·
   <a href="docs/SELF_HOSTING.md">Self-hosting</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
@@ -18,7 +18,7 @@ VitaeInk is a local-first resume builder. It opens with a complete example, upda
 
 The studio interface uses shadcn/ui's Base Nova preset with Base UI primitives. The resume renderer remains an isolated semantic HTML/CSS boundary so interface styling cannot change its ATS reading order or print output.
 
-Try the hosted version at **[vitaeink.matheus-silva-74d.workers.dev](https://vitaeink.matheus-silva-74d.workers.dev)**. The hosted studio uses the same public build and still stores resume content only on your device.
+Try the hosted version at **[vitaeink.dimi.dev.br](https://vitaeink.dimi.dev.br)**. The hosted studio uses the same public build and still stores resume content only on your device.
 
 ## Why VitaeInk
 

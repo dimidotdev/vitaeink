@@ -6,13 +6,13 @@
 
 <p align="center"><strong>Um estúdio privado e open source para currículos que pessoas e máquinas leem com clareza.</strong></p>
 
-<p align="center"><a href="README.md">English</a> · <a href="https://vitaeink.matheus-silva-74d.workers.dev">Abrir o estúdio</a> · <a href="docs/SELF_HOSTING.md">Self-hosting</a> · <a href="CONTRIBUTING.md">Como contribuir</a></p>
+<p align="center"><a href="README.md">English</a> · <a href="https://vitaeink.dimi.dev.br">Abrir o estúdio</a> · <a href="docs/SELF_HOSTING.md">Self-hosting</a> · <a href="CONTRIBUTING.md">Como contribuir</a></p>
 
 VitaeInk é um criador de currículos local-first. Ele abre com um exemplo completo, atualiza uma visualização HTML semântica enquanto você escreve e exporta texto selecionável por meio da impressão nativa do navegador. Não há conta, analytics, banco de dados na nuvem ou fontes externas.
 
 A interface do estúdio usa o preset Base Nova do shadcn/ui com primitivas Base UI. O currículo permanece isolado em HTML/CSS semântico para que a estética do painel não altere sua ordem de leitura por ATS ou a impressão.
 
-Use a versão pública em **[vitaeink.matheus-silva-74d.workers.dev](https://vitaeink.matheus-silva-74d.workers.dev)**. Ela executa o mesmo código aberto e mantém o conteúdo do currículo apenas no seu dispositivo.
+Use a versão pública em **[vitaeink.dimi.dev.br](https://vitaeink.dimi.dev.br)**. Ela executa o mesmo código aberto e mantém o conteúdo do currículo apenas no seu dispositivo.
 
 ## Principais capacidades
 
