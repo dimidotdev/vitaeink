@@ -10,7 +10,7 @@ const DropdownMenuContent = ({ align = 'start', alignOffset = 0, side = 'bottom'
     <MenuPrimitive.Positioner role="region" aria-label={positionerLabel} className="isolate z-50 outline-none" align={align} alignOffset={alignOffset} side={side} sideOffset={sideOffset}>
       <MenuPrimitive.Popup
         data-slot="dropdown-menu-content"
-        className={cn('no-print relative z-50 max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto overscroll-contain rounded-lg bg-popover/75 p-1 text-popover-foreground shadow-lg ring-1 ring-foreground/10 outline-none before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95', className)}
+        className={cn('no-print relative z-50 max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto overscroll-contain rounded-lg bg-popover/75 p-1 text-popover-foreground shadow-lg ring-1 ring-foreground/10 outline-none before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 data-open:animate-in data-open:zoom-in-95 data-closed:animate-out data-closed:zoom-out-95', className)}
         {...props}
       />
     </MenuPrimitive.Positioner>
