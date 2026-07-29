@@ -29,6 +29,7 @@ Try the hosted version at **[vitaeink.matheus-silva-74d.workers.dev](https://vit
 - **Customizable without layout traps:** three templates, three locally hosted open-source typefaces, density, text size, line height, section ordering, visibility, and accessible accent colors.
 - **Self-hostable:** the same static build runs on Linux, Windows, macOS, Docker, Nginx, or Cloudflare Workers.
 - **Accessible:** keyboard-first controls, semantic landmarks, visible focus, reduced-motion support, and WCAG contrast checks.
+- **Comfortable in every environment:** a cyan light/dark interface follows the operating system on first use, while English, Brazilian Portuguese, and Spanish UI preferences stay independent from the resume language.
 
 ## Run locally
 
@@ -82,6 +83,7 @@ src/storage/            IndexedDB repository
 src/components/ui/      shadcn Base Nova interface primitives
 src/features/editor/    accessible structured editing
 src/features/preview/   shared semantic preview and print renderer
+src/i18n/               typed English, Brazilian Portuguese, and Spanish UI catalogs
 src/styles/             application, document, and print styles
 e2e/                    browser and PDF contracts
 ```

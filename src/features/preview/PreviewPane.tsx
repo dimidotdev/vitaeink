@@ -1,6 +1,9 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { RiAddLine, RiFullscreenLine, RiSubtractLine } from '@remixicon/react'
 import { Button } from '../../components/ui/button'
+import { ScrollHints } from '../../components/ScrollHint'
+import { useScrollHints } from '../../components/useScrollHints'
+import { usePreferences } from '../../app/usePreferences'
 import type { ResumeDocument } from '../../domain/resume'
 import { ResumeRenderer } from './ResumeRenderer'
 
@@ -15,7 +18,8 @@ const PAGE_DIMENSIONS = {
 } as const
 
 export const PreviewPane = ({ document, onPageCountChange }: PreviewPaneProps) => {
-  const hostRef = useRef<HTMLDivElement>(null)
+  const { t } = usePreferences()
+  const { ref: hostRef, scrollState: hostScrollState } = useScrollHints<HTMLDivElement>()
   const pageRef = useRef<HTMLElement>(null)
   const [fitScale, setFitScale] = useState(1)
   const [manualScale, setManualScale] = useState<number>()
@@ -31,7 +35,7 @@ export const PreviewPane = ({ document, onPageCountChange }: PreviewPaneProps) =
     const observer = new ResizeObserver(updateScale)
     observer.observe(host)
     return () => { observer.disconnect() }
-  }, [dimensions.width])
+  }, [dimensions.width, hostRef])
 
   useLayoutEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -49,23 +53,29 @@ export const PreviewPane = ({ document, onPageCountChange }: PreviewPaneProps) =
   }
 
   return (
-    <section className="preview-shell" aria-label="Live resume preview">
+    <section className="preview-shell" aria-label={t('preview.aria')}>
       <div className="preview-toolbar no-print">
-        <div className="preview-title"><span className="live-dot" aria-hidden="true" /> <span>Live preview</span><small>{document.settings.pageSize}</small></div>
-        <div className="preview-zoom" role="group" aria-label="Preview zoom">
-          <Button type="button" variant="ghost" size="icon-sm" aria-label="Zoom out" disabled={scale <= 0.3} onClick={() => { changeZoom(-0.1) }}><RiSubtractLine aria-hidden="true" /></Button>
-          <button type="button" className="zoom-value" aria-label={`Preview zoom ${Math.round(scale * 100)} percent. Fit to width`} onClick={() => { setManualScale(undefined) }}>{Math.round(scale * 100)}%</button>
-          <Button type="button" variant="ghost" size="icon-sm" aria-label="Zoom in" disabled={scale >= 1.25} onClick={() => { changeZoom(0.1) }}><RiAddLine aria-hidden="true" /></Button>
-          <Button type="button" variant="ghost" size="icon-sm" aria-label="Fit preview to width" onClick={() => { setManualScale(undefined) }}><RiFullscreenLine aria-hidden="true" /></Button>
+        <div className="preview-title"><span className="live-dot" aria-hidden="true" /> <span>{t('preview.live')}</span><small>{document.settings.pageSize}</small></div>
+        <div className="preview-zoom" role="group" aria-label={t('preview.zoomGroup')}>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label={t('preview.zoomOut')} disabled={scale <= 0.3} onClick={() => { changeZoom(-0.1) }}><RiSubtractLine aria-hidden="true" /></Button>
+          <button type="button" className="zoom-value" aria-label={t('preview.zoomValue', { percent: Math.round(scale * 100) })} onClick={() => { setManualScale(undefined) }}>{Math.round(scale * 100)}%</button>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label={t('preview.zoomIn')} disabled={scale >= 1.25} onClick={() => { changeZoom(0.1) }}><RiAddLine aria-hidden="true" /></Button>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label={t('preview.fit')} onClick={() => { setManualScale(undefined) }}><RiFullscreenLine aria-hidden="true" /></Button>
         </div>
       </div>
-      <div className="preview-host" ref={hostRef}>
+      <div className="preview-host" ref={hostRef} tabIndex={0}>
         <div className="preview-stage" style={{ width: dimensions.width * scale, height: scaledHeight }}>
           <div className="preview-transform" style={{ transform: `scale(${scale})`, width: dimensions.width }}>
-            <ResumeRenderer ref={pageRef} document={document} />
+            <ResumeRenderer
+              ref={pageRef}
+              document={document}
+              ariaLabel={t('preview.documentLabel', { name: document.basics.name || t('preview.untitled') })}
+              emptyNameLabel={t('preview.yourName')}
+            />
           </div>
         </div>
       </div>
+      <ScrollHints {...hostScrollState} />
       <style media="print">{`@page { size: ${document.settings.pageSize}; margin: 14mm 16mm 15mm; }`}</style>
     </section>
   )

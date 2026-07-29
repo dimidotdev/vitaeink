@@ -14,6 +14,9 @@ const SECTION_LABELS: Record<ResumeDocument['settings']['locale'], Record<Sectio
 export const sectionLabel = (section: SectionKey, locale: ResumeDocument['settings']['locale']): string =>
   SECTION_LABELS[locale][section]
 
+export const credentialLabel = (locale: ResumeDocument['settings']['locale']): string =>
+  locale === 'pt-BR' ? 'Credencial' : 'Credential'
+
 export const formatMonth = (value: string, locale: ResumeDocument['settings']['locale']): string => {
   if (!value) return ''
   const [year, month] = value.split('-').map(Number)

@@ -1,4 +1,5 @@
 import { lazy, Suspense, type ReactNode } from 'react'
+import { usePreferences } from '../../app/usePreferences'
 import type { EditorSection } from '../../components/SectionNav'
 import type { DocumentIssue } from '../../domain/documentChecks'
 import type { ResumeDocument } from '../../domain/resume'
@@ -25,6 +26,7 @@ interface EditorPanelProps {
 }
 
 export const EditorPanel = ({ active, document, update, issues, pageCount, onSelect, onPrint }: EditorPanelProps) => {
+  const { t } = usePreferences()
   let panel: ReactNode
 
   switch (active) {
@@ -39,5 +41,5 @@ export const EditorPanel = ({ active, document, update, issues, pageCount, onSel
     case 'check': panel = <CheckEditor issues={issues} pageCount={pageCount} onSelect={onSelect} onPrint={onPrint} />; break
   }
 
-  return <Suspense fallback={<div className="editor-loading" role="status"><span aria-hidden="true" />Loading editor…</div>}>{panel}</Suspense>
+  return <Suspense fallback={<div className="editor-loading" role="status"><span aria-hidden="true" />{t('editor.loading')}</div>}>{panel}</Suspense>
 }

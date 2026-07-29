@@ -32,6 +32,7 @@ describe('resume renderer', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'Experiência' })).toBeInTheDocument()
     expect(screen.getAllByText(/Atual/).length).toBeGreaterThan(0)
     expect(screen.getByRole('heading', { level: 3, name: / em / })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Credencial' })).toBeInTheDocument()
   })
 
   it('keeps placeholders and incomplete entries out of print', () => {

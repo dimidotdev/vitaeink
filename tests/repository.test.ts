@@ -27,4 +27,11 @@ describe('resume repository', () => {
     await Promise.all([saveResume(first), saveResume(second)])
     await expect(loadResume()).resolves.toMatchObject({ basics: { name: 'Latest edit' } })
   })
+
+  it('preserves a deliberately selected custom accent', async () => {
+    const sample = createSampleResume()
+    sample.settings.accent = '#9A3412'
+    await saveResume(sample)
+    await expect(loadResume()).resolves.toMatchObject({ settings: { accent: '#9A3412' } })
+  })
 })

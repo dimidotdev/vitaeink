@@ -7,6 +7,10 @@ describe('document checks', () => {
   it('identifies essential missing content without inventing a score', () => {
     const issues = runDocumentChecks(createBlankResume())
     expect(issues.map((issue) => issue.id)).toEqual(expect.arrayContaining(['missing-name', 'missing-headline', 'invalid-email']))
+    expect(issues.find((issue) => issue.id === 'missing-name')).toMatchObject({
+      titleKey: 'check.issue.missingName.title',
+      detailKey: 'check.issue.missingName.detail',
+    })
   })
 
   it('flags unsafe links and low-contrast accents', () => {

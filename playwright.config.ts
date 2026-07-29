@@ -11,6 +11,8 @@ export default defineConfig({
   reporter: process.env.CI ? 'github' : 'list',
   use: {
     baseURL: externalBaseUrl ?? 'http://127.0.0.1:4173',
+    colorScheme: 'light',
+    locale: 'en-US',
     trace: 'on-first-retry',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],

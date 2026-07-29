@@ -3,7 +3,7 @@ import type { ResumeDocument } from '../../domain/resume'
 import { ResumeHeader } from './ResumeHeader'
 import { ResumeSection } from './renderResumeSection'
 
-interface ResumeRendererProps { document: ResumeDocument; ref?: Ref<HTMLElement> }
+interface ResumeRendererProps { document: ResumeDocument; ref?: Ref<HTMLElement>; ariaLabel?: string; emptyNameLabel?: string }
 
 type ResumeStyle = CSSProperties & {
   '--resume-accent': string
@@ -11,7 +11,7 @@ type ResumeStyle = CSSProperties & {
   '--resume-line-height': string
 }
 
-export const ResumeRenderer = ({ document, ref }: ResumeRendererProps) => {
+export const ResumeRenderer = ({ document, ref, ariaLabel, emptyNameLabel }: ResumeRendererProps) => {
   const { settings } = document
   const style: ResumeStyle = {
     '--resume-accent': settings.accent,
@@ -26,9 +26,9 @@ export const ResumeRenderer = ({ document, ref }: ResumeRendererProps) => {
       className={`resume-document page-${settings.pageSize.toLowerCase()} template-${settings.template} font-${settings.font} density-${settings.density}`}
       style={style}
       lang={settings.locale}
-      aria-label={`${document.basics.name || 'Untitled'} resume preview`}
+      aria-label={ariaLabel ?? `${document.basics.name || 'Untitled'} resume preview`}
     >
-      <ResumeHeader basics={document.basics} />
+      <ResumeHeader basics={document.basics} emptyNameLabel={emptyNameLabel} />
       {visibleSections.map((section) => <ResumeSection key={section} section={section} document={document} />)}
     </article>
   )

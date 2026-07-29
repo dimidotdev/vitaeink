@@ -96,7 +96,7 @@ const SAMPLE_RESUME: ResumeDocument = {
     fontSize: 10.5,
     lineHeight: 1.45,
     density: 'balanced',
-    accent: '#9A3412',
+    accent: '#0E7490',
     pageSize: 'A4',
     locale: 'en',
     sectionOrder: ['profile', 'experience', 'projects', 'education', 'certifications', 'skills', 'languages'],

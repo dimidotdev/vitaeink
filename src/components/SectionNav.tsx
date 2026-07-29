@@ -1,6 +1,7 @@
 import {
   RiShieldCheckLine,
 } from '@remixicon/react'
+import { usePreferences } from '../app/usePreferences'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { NAV_ITEMS, type EditorSection } from './sectionNavItems'
@@ -13,9 +14,11 @@ interface SectionNavProps {
   onChange: (section: EditorSection) => void
 }
 
-export const SectionNav = ({ active, issues, onChange }: SectionNavProps) => (
-  <nav className="section-nav" aria-label="Resume sections">
-    <div className="nav-heading" aria-hidden="true"><span>Resume</span><small>Content & style</small></div>
+export const SectionNav = ({ active, issues, onChange }: SectionNavProps) => {
+  const { t } = usePreferences()
+  return (
+  <nav className="section-nav" aria-label={t('nav.aria')}>
+    <div className="nav-heading" aria-hidden="true"><span>{t('nav.resume')}</span><small>{t('nav.contentStyle')}</small></div>
     <div className="nav-items">
       {NAV_ITEMS.map((item) => {
         const Icon = item.icon
@@ -30,13 +33,13 @@ export const SectionNav = ({ active, issues, onChange }: SectionNavProps) => (
             onClick={() => { onChange(item.key) }}
           >
             <Icon aria-hidden="true" />
-            <span>{item.label}</span>
+            <span>{t(item.labelKey)}</span>
           </Button>
         )
       })}
     </div>
     <div className="nav-review">
-      <span className="nav-review-label" aria-hidden="true">Review</span>
+      <span className="nav-review-label" aria-hidden="true">{t('nav.review')}</span>
       <Button
         type="button"
         variant={active === 'check' ? 'secondary' : 'ghost'}
@@ -45,10 +48,11 @@ export const SectionNav = ({ active, issues, onChange }: SectionNavProps) => (
         onClick={() => { onChange('check') }}
       >
         <RiShieldCheckLine aria-hidden="true" />
-        <span>Document check</span>
-        <Badge variant={issues === 0 ? 'secondary' : 'outline'} className={issues === 0 ? 'issue-count issue-clear' : 'issue-count'} aria-label={`${issues} findings`}>{issues}</Badge>
+        <span>{t('nav.documentCheck')}</span>
+        <Badge variant={issues === 0 ? 'secondary' : 'outline'} className={issues === 0 ? 'issue-count issue-clear' : 'issue-count'} aria-label={t(issues === 1 ? 'nav.finding.one' : 'nav.finding.many', { count: issues })}>{issues}</Badge>
       </Button>
     </div>
-    <p className="privacy-note"><span aria-hidden="true">●</span> Private by design<br /><small>Saved only on this device</small></p>
+    <p className="privacy-note"><span aria-hidden="true">●</span> {t('nav.private')}<br /><small>{t('nav.savedLocally')}</small></p>
   </nav>
-)
+  )
+}

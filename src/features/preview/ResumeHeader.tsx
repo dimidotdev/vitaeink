@@ -1,13 +1,13 @@
 import { safeExternalUrl, visibleUrl } from '../../domain/presentation'
 import type { ResumeDocument } from '../../domain/resume'
 
-interface ResumeHeaderProps { basics: ResumeDocument['basics'] }
+interface ResumeHeaderProps { basics: ResumeDocument['basics']; emptyNameLabel?: string }
 
-export const ResumeHeader = ({ basics }: ResumeHeaderProps) => {
+export const ResumeHeader = ({ basics, emptyNameLabel = 'Your name' }: ResumeHeaderProps) => {
   const website = safeExternalUrl(basics.website)
   return (
     <header className="resume-header">
-      {basics.name.trim() ? <h1>{basics.name}</h1> : <h1 className="resume-placeholder no-print">Your name</h1>}
+      {basics.name.trim() ? <h1>{basics.name}</h1> : <h1 className="resume-placeholder no-print">{emptyNameLabel}</h1>}
       {basics.headline && <p className="resume-headline">{basics.headline}</p>}
       <address>
         <ul className="contact-list">

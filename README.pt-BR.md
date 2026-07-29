@@ -23,6 +23,7 @@ Use a versão pública em **[vitaeink.matheus-silva-74d.workers.dev](https://vit
 - A4 e Carta, três templates, três fontes open source locais e controles de tipografia.
 - Reordenação e ocultação acessíveis, inclusive pelo teclado.
 - Execução no navegador, Linux, Windows, macOS, Docker, Nginx e Cloudflare Workers.
+- Interface ciano clara/escura que inicia conforme o sistema, com painel em inglês, português do Brasil ou espanhol.
 - Conteúdo do currículo em inglês ou português do Brasil.
 
 ## Desenvolvimento local

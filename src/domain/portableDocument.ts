@@ -1,31 +1,37 @@
 import { resumeDocumentSchema, type ResumeDocument } from './resume'
+import { formatMessage, type MessageKey } from '../i18n/messages'
 
 export const MAX_IMPORT_BYTES = 1_000_000
 
 export class ResumeImportError extends Error {
-  constructor(message: string) {
-    super(message)
+  readonly messageKey: MessageKey
+  readonly values?: Record<string, string | number>
+
+  constructor(messageKey: MessageKey, values?: Record<string, string | number>) {
+    super(formatMessage('en', messageKey, values))
     this.name = 'ResumeImportError'
+    this.messageKey = messageKey
+    this.values = values
   }
 }
 
 export const parseResumeJson = (source: string): ResumeDocument => {
   if (new Blob([source]).size > MAX_IMPORT_BYTES) {
-    throw new ResumeImportError('This file is larger than the 1 MB import limit.')
+    throw new ResumeImportError('import.tooLarge')
   }
 
   let candidate: unknown
   try {
     candidate = JSON.parse(source) as unknown
   } catch {
-    throw new ResumeImportError('This is not valid JSON.')
+    throw new ResumeImportError('import.invalidJson')
   }
 
   const result = resumeDocumentSchema.safeParse(candidate)
   if (!result.success) {
     const firstIssue = result.error.issues[0]
     const location = firstIssue?.path.join('.') || 'document'
-    throw new ResumeImportError(`The resume is not valid at “${location}”.`)
+    throw new ResumeImportError('import.invalidDocument', { location })
   }
   return result.data
 }

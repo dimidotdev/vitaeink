@@ -1,4 +1,8 @@
 @media print {
+  :root, :root:is(.dark, [data-theme="dark"]), body, #root {
+    color-scheme: light !important;
+  }
+
   html, body, #root, .app-shell, .workspace, .workspace-preview, .preview-shell, .preview-host, .preview-stage, .preview-transform {
     width: auto !important;
     min-width: 0 !important;
@@ -18,7 +22,10 @@
     min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    background: #ffffff !important;
     box-shadow: none !important;
+    color: #24211e !important;
+    color-scheme: light !important;
     transform: none !important;
   }
   .preview-transform { position: static !important; transform: none !important; }

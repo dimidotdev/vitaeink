@@ -1,4 +1,5 @@
 import { RiAddLine } from '@remixicon/react'
+import { usePreferences } from '../../../app/usePreferences'
 import type { DocumentUpdater } from '../../../app/useResumeDocument'
 import { Button } from '../../../components/ui/button'
 import { blankProject } from '../../../domain/factories'
@@ -11,29 +12,31 @@ import { HighlightsEditor } from '../HighlightsEditor'
 
 interface ProjectsEditorProps { document: ResumeDocument; update: (updater: DocumentUpdater) => void }
 
-export const ProjectsEditor = ({ document, update }: ProjectsEditorProps) => (
-  <div className="editor-stack">
+export const ProjectsEditor = ({ document, update }: ProjectsEditorProps) => {
+  const { t } = usePreferences()
+
+  return <div className="editor-stack">
     <div className="editor-heading">
-      <p className="eyebrow">Work people can inspect</p>
-      <h2>Projects</h2>
-      <p>Prioritize substantial projects that prove the same skills your target roles require.</p>
+      <p className="eyebrow">{t('projects.eyebrow')}</p>
+      <h2>{t('projects.title')}</h2>
+      <p>{t('projects.description')}</p>
     </div>
     {document.projects.map((entry, index) => (
-      <EditableDetails key={entry.id} title={entry.name || 'New project'} subtitle={entry.role || 'Your role'} defaultOpen={index === 0}>
+      <EditableDetails key={entry.id} title={entry.name || t('projects.new')} subtitle={entry.role || t('projects.yourRole')} defaultOpen={index === 0}>
         <div className="entry-card-body">
           <div className="field-grid two-columns">
-            <TextField label="Project name" value={entry.name} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.name = value }) }} />
-            <TextField label="Your role" value={entry.role} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.role = value }) }} />
-            <TextField label="Project URL" value={entry.url} type="url" inputMode="url" maxLength={RESUME_LIMITS.url} placeholder="https://github.com/…" onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.url = value }) }} />
+            <TextField label={t('projects.name')} value={entry.name} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.name = value }) }} />
+            <TextField label={t('projects.yourRole')} value={entry.role} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.role = value }) }} />
+            <TextField label={t('projects.url')} value={entry.url} type="url" inputMode="url" maxLength={RESUME_LIMITS.url} placeholder="https://github.com/…" onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.url = value }) }} />
             <span />
-            <TextField label="Start" type="month" value={entry.startDate} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.startDate = value }) }} />
-            <TextField label="End" type="month" value={entry.endDate} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.endDate = value }) }} />
+            <TextField label={t('projects.start')} type="month" value={entry.startDate} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.startDate = value }) }} />
+            <TextField label={t('projects.end')} type="month" value={entry.endDate} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.endDate = value }) }} />
           </div>
-          <CheckboxField label="This project is ongoing" checked={entry.current} onChange={(checked) => { update((draft) => { const item = draft.projects[index]; if (item) { item.current = checked; if (checked) item.endDate = '' } }) }} />
-          <TextAreaField label="One-line description" value={entry.summary} rows={3} help="Explain the problem and audience before implementation details." onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.summary = value }) }} />
+          <CheckboxField label={t('projects.ongoing')} checked={entry.current} onChange={(checked) => { update((draft) => { const item = draft.projects[index]; if (item) { item.current = checked; if (checked) item.endDate = '' } }) }} />
+          <TextAreaField label={t('projects.summary')} value={entry.summary} rows={3} help={t('projects.summaryHelp')} onChange={(value) => { update((draft) => { const item = draft.projects[index]; if (item) item.summary = value }) }} />
           <HighlightsEditor values={entry.highlights} maxEntries={RESUME_LIMITS.projectHighlights} onChange={(values) => { update((draft) => { const item = draft.projects[index]; if (item) item.highlights = values }) }} />
           <EntryActions
-            label={entry.name || `project ${index + 1}`}
+            label={entry.name || t('projects.fallback', { number: index + 1 })}
             index={index}
             total={document.projects.length}
             onMove={(direction) => { update((draft) => { moveEntry(draft.projects, index, direction) }) }}
@@ -42,6 +45,6 @@ export const ProjectsEditor = ({ document, update }: ProjectsEditorProps) => (
         </div>
       </EditableDetails>
     ))}
-    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.projects.length >= RESUME_LIMITS.projects} onClick={() => { update((draft) => { if (draft.projects.length < RESUME_LIMITS.projects) draft.projects.push(blankProject()) }) }}><RiAddLine aria-hidden="true" /> Add project</Button>
+    <Button type="button" variant="outline" size="lg" className="add-entry" disabled={document.projects.length >= RESUME_LIMITS.projects} onClick={() => { update((draft) => { if (draft.projects.length < RESUME_LIMITS.projects) draft.projects.push(blankProject()) }) }}><RiAddLine aria-hidden="true" /> {t('projects.add')}</Button>
   </div>
-)
+}

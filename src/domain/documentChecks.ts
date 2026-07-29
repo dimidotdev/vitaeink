@@ -1,5 +1,6 @@
 import type { ResumeDocument, SectionKey } from './resume'
 import { safeExternalUrl } from './presentation'
+import type { MessageKey } from '../i18n/messages'
 import {
   certificationHasContent,
   educationHasContent,
@@ -19,8 +20,9 @@ export interface DocumentIssue {
   id: string
   level: 'warning' | 'suggestion'
   section: SectionKey | 'document'
-  title: string
-  detail: string
+  titleKey: MessageKey
+  detailKey: MessageKey
+  values?: Record<string, string | number>
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -46,70 +48,77 @@ export const runDocumentChecks = (document: ResumeDocument): DocumentIssue[] => 
   const add = (issue: DocumentIssue): void => { issues.push(issue) }
 
   if (!document.basics.name.trim()) {
-    add({ id: 'missing-name', level: 'warning', section: 'profile', title: 'Add your name', detail: 'Recruiters and parsers need a clear document owner.' })
+    add({ id: 'missing-name', level: 'warning', section: 'profile', titleKey: 'check.issue.missingName.title', detailKey: 'check.issue.missingName.detail' })
   }
   if (!document.basics.headline.trim()) {
-    add({ id: 'missing-headline', level: 'warning', section: 'profile', title: 'Add a professional headline', detail: 'State the role and technical focus you want to be found for.' })
+    add({ id: 'missing-headline', level: 'warning', section: 'profile', titleKey: 'check.issue.missingHeadline.title', detailKey: 'check.issue.missingHeadline.detail' })
   }
   if (!document.basics.email.trim() || !emailPattern.test(document.basics.email)) {
-    add({ id: 'invalid-email', level: 'warning', section: 'profile', title: 'Check your email', detail: 'Use a complete address that an ATS can identify.' })
+    add({ id: 'invalid-email', level: 'warning', section: 'profile', titleKey: 'check.issue.invalidEmail.title', detailKey: 'check.issue.invalidEmail.detail' })
   }
   if (document.basics.summary.trim().length < 80) {
-    add({ id: 'short-summary', level: 'suggestion', section: 'profile', title: 'Strengthen the profile', detail: 'A concise 2–4 sentence profile can connect your role, stack, and impact.' })
+    add({ id: 'short-summary', level: 'suggestion', section: 'profile', titleKey: 'check.issue.shortSummary.title', detailKey: 'check.issue.shortSummary.detail' })
   }
   if (!document.experience.some(isRenderableExperience)) {
-    add({ id: 'missing-experience', level: 'suggestion', section: 'experience', title: 'Add relevant experience', detail: 'Paid work, freelance engagements, and substantial ongoing projects can all provide evidence.' })
+    add({ id: 'missing-experience', level: 'suggestion', section: 'experience', titleKey: 'check.issue.missingExperience.title', detailKey: 'check.issue.missingExperience.detail' })
   }
   document.experience.forEach((entry) => {
     if (!isRenderableExperience(entry)) {
-      add({ id: `experience-title-${entry.id}`, level: 'warning', section: 'experience', title: 'Complete an experience heading', detail: 'Each role needs both a title and organization.' })
+      add({ id: `experience-title-${entry.id}`, level: 'warning', section: 'experience', titleKey: 'check.issue.experienceHeading.title', detailKey: 'check.issue.experienceHeading.detail' })
     }
     if (experienceHasContent(entry) && entry.highlights.filter((item) => item.trim()).length === 0) {
-      add({ id: `experience-detail-${entry.id}`, level: 'suggestion', section: 'experience', title: `Add evidence for ${entry.role || 'this role'}`, detail: 'Describe what changed because of your work, without inventing metrics.' })
+      add({
+        id: `experience-detail-${entry.id}`,
+        level: 'suggestion',
+        section: 'experience',
+        titleKey: 'check.issue.experienceEvidence.title',
+        detailKey: 'check.issue.experienceEvidence.detail',
+        values: { subject: entry.role },
+      })
     }
   })
   document.projects.forEach((entry) => {
     if (!isRenderableProject(entry)) {
-      add({ id: `project-title-${entry.id}`, level: 'warning', section: 'projects', title: 'Name or remove this project', detail: projectHasContent(entry) ? 'A project needs a clear name before it can be exported.' : 'This empty project is excluded from the exported document.' })
+      add({ id: `project-title-${entry.id}`, level: 'warning', section: 'projects', titleKey: 'check.issue.projectTitle.title', detailKey: projectHasContent(entry) ? 'check.issue.projectTitle.partial' : 'check.issue.projectTitle.empty' })
     }
     if (isRenderableProject(entry) && !entry.summary.trim() && !entry.highlights.some((item) => item.trim())) {
-      add({ id: `project-detail-${entry.id}`, level: 'suggestion', section: 'projects', title: `Add evidence for ${entry.name}`, detail: 'Explain the problem, your contribution, or a factual outcome.' })
+      add({ id: `project-detail-${entry.id}`, level: 'suggestion', section: 'projects', titleKey: 'check.issue.projectEvidence.title', detailKey: 'check.issue.projectEvidence.detail', values: { subject: entry.name } })
     }
   })
   document.education.forEach((entry) => {
     if (!isRenderableEducation(entry)) {
-      add({ id: `education-title-${entry.id}`, level: 'warning', section: 'education', title: 'Complete or remove this education entry', detail: educationHasContent(entry) ? 'Include the institution and a degree or field of study.' : 'This empty entry is excluded from the exported document.' })
+      add({ id: `education-title-${entry.id}`, level: 'warning', section: 'education', titleKey: 'check.issue.educationTitle.title', detailKey: educationHasContent(entry) ? 'check.issue.educationTitle.partial' : 'check.issue.educationTitle.empty' })
     }
   })
   document.certifications.forEach((entry) => {
     if (!isRenderableCertification(entry)) {
-      add({ id: `certification-title-${entry.id}`, level: 'warning', section: 'certifications', title: 'Complete or remove this certification', detail: certificationHasContent(entry) ? 'Include both the certification and issuer.' : 'This empty entry is excluded from the exported document.' })
+      add({ id: `certification-title-${entry.id}`, level: 'warning', section: 'certifications', titleKey: 'check.issue.certificationTitle.title', detailKey: certificationHasContent(entry) ? 'check.issue.certificationTitle.partial' : 'check.issue.certificationTitle.empty' })
     }
   })
   document.skills.forEach((entry) => {
     if (!isRenderableSkill(entry)) {
-      add({ id: `skill-title-${entry.id}`, level: 'warning', section: 'skills', title: 'Complete or remove this skill group', detail: skillHasContent(entry) ? 'Include a category and at least one factual skill.' : 'This empty group is excluded from the exported document.' })
+      add({ id: `skill-title-${entry.id}`, level: 'warning', section: 'skills', titleKey: 'check.issue.skillTitle.title', detailKey: skillHasContent(entry) ? 'check.issue.skillTitle.partial' : 'check.issue.skillTitle.empty' })
     }
   })
   document.languages.forEach((entry) => {
     if (!isRenderableLanguage(entry)) {
-      add({ id: `language-title-${entry.id}`, level: 'warning', section: 'languages', title: 'Complete or remove this language', detail: languageHasContent(entry) ? 'Include both the language and proficiency.' : 'This empty entry is excluded from the exported document.' })
+      add({ id: `language-title-${entry.id}`, level: 'warning', section: 'languages', titleKey: 'check.issue.languageTitle.title', detailKey: languageHasContent(entry) ? 'check.issue.languageTitle.partial' : 'check.issue.languageTitle.empty' })
     }
   })
   document.basics.links.forEach((link) => {
     if (Boolean(link.label.trim()) !== Boolean(link.url.trim())) {
-      add({ id: `link-${link.id}`, level: 'warning', section: 'profile', title: 'Complete or remove this profile link', detail: 'Every profile link needs both a visible label and a complete URL.' })
+      add({ id: `link-${link.id}`, level: 'warning', section: 'profile', titleKey: 'check.issue.profileLink.title', detailKey: 'check.issue.profileLink.detail' })
     }
   })
   const urls = [document.basics.website, ...document.basics.links.map((link) => link.url), ...document.projects.map((project) => project.url), ...document.certifications.map((item) => item.url)]
   if (urls.some((url) => url.trim() && !safeExternalUrl(url))) {
-    add({ id: 'invalid-url', level: 'warning', section: 'profile', title: 'Check your links', detail: 'Links must be complete http:// or https:// addresses.' })
+    add({ id: 'invalid-url', level: 'warning', section: 'profile', titleKey: 'check.issue.invalidUrl.title', detailKey: 'check.issue.invalidUrl.detail' })
   }
   if (contrastOnWhite(document.settings.accent) < 4.5) {
-    add({ id: 'accent-contrast', level: 'warning', section: 'document', title: 'Increase accent contrast', detail: 'The selected accent is too light against the white document.' })
+    add({ id: 'accent-contrast', level: 'warning', section: 'document', titleKey: 'check.issue.accentContrast.title', detailKey: 'check.issue.accentContrast.detail' })
   }
   if (document.settings.fontSize < 9.5) {
-    add({ id: 'small-type', level: 'suggestion', section: 'document', title: 'Consider larger text', detail: 'Very small type can be uncomfortable for human reviewers.' })
+    add({ id: 'small-type', level: 'suggestion', section: 'document', titleKey: 'check.issue.smallType.title', detailKey: 'check.issue.smallType.detail' })
   }
 
   return issues

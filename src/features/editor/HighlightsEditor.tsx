@@ -1,4 +1,5 @@
 import { RiAddLine, RiDeleteBinLine } from '@remixicon/react'
+import { usePreferences } from '../../app/usePreferences'
 import { Button } from '../../components/ui/button'
 import { TextAreaField } from './fields'
 
@@ -9,7 +10,9 @@ interface HighlightsEditorProps {
   maxEntries: number
 }
 
-export const HighlightsEditor = ({ values, onChange, label = 'Outcome', maxEntries }: HighlightsEditorProps) => {
+export const HighlightsEditor = ({ values, onChange, label, maxEntries }: HighlightsEditorProps) => {
+  const { t } = usePreferences()
+  const itemLabel = label ?? t('highlights.outcome')
   const updateAt = (index: number, value: string): void => {
     const next = [...values]
     next[index] = value
@@ -19,18 +22,18 @@ export const HighlightsEditor = ({ values, onChange, label = 'Outcome', maxEntri
 
   return (
     <fieldset className="highlights-editor">
-      <legend>Evidence and outcomes</legend>
-      <p className="field-help">Use concise bullets. Lead with the action and state the factual result.</p>
+      <legend>{t('highlights.legend')}</legend>
+      <p className="field-help">{t('highlights.help')}</p>
       {values.map((value, index) => (
-        <div className="highlight-row" key={`${label}-${index}`}>
-          <TextAreaField label={`${label} ${index + 1}`} value={value} rows={3} onChange={(next) => { updateAt(index, next) }} />
-          <Button type="button" variant="destructive" size="icon" onClick={() => { removeAt(index) }} aria-label={`Remove ${label.toLowerCase()} ${index + 1}`} title="Remove outcome">
+        <div className="highlight-row" key={`${itemLabel}-${index}`}>
+          <TextAreaField label={`${itemLabel} ${index + 1}`} value={value} rows={3} onChange={(next) => { updateAt(index, next) }} />
+          <Button type="button" variant="destructive" size="icon" onClick={() => { removeAt(index) }} aria-label={t('highlights.remove', { label: itemLabel, number: index + 1 })} title={t('highlights.removeTitle')}>
             <RiDeleteBinLine aria-hidden="true" />
           </Button>
         </div>
       ))}
       <Button type="button" variant="outline" className="add-outcome" disabled={values.length >= maxEntries} onClick={() => { if (values.length < maxEntries) onChange([...values, '']) }}>
-        <RiAddLine aria-hidden="true" /> Add outcome
+        <RiAddLine aria-hidden="true" /> {t('highlights.add')}
       </Button>
     </fieldset>
   )

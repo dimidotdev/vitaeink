@@ -1,8 +1,8 @@
-import { MAX_IMPORT_BYTES, parseResumeJson, safeFilename, serializeResume } from '../domain/portableDocument'
+import { MAX_IMPORT_BYTES, parseResumeJson, ResumeImportError, safeFilename, serializeResume } from '../domain/portableDocument'
 import type { ResumeDocument } from '../domain/resume'
 
 export const importResumeFile = async (file: File): Promise<ResumeDocument> => {
-  if (file.size > MAX_IMPORT_BYTES) throw new Error('This file is larger than the 1 MB import limit.')
+  if (file.size > MAX_IMPORT_BYTES) throw new ResumeImportError('import.tooLarge')
   return parseResumeJson(await file.text())
 }
 

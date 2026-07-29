@@ -20,7 +20,7 @@
   transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
 }
 .field textarea { resize: vertical; line-height: 1.55; }
-.field input:hover, .field textarea:hover, .field select:hover { border-color: #aaa9a3; }
+.field input:hover, .field textarea:hover, .field select:hover { border-color: color-mix(in srgb, var(--vi-border-strong) 72%, var(--vi-ink)); }
 .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--vi-focus); }
 .field input::placeholder, .field textarea::placeholder { color: var(--vi-subtle-ink); }
 .field-help { color: var(--vi-muted-ink); font-size: 0.74rem; line-height: 1.45; }
@@ -29,7 +29,7 @@
 .skill-grid { grid-template-columns: minmax(8rem, 0.7fr) minmax(14rem, 1.3fr); }
 
 .checkbox-field { display: flex; min-height: 2.75rem; align-items: center; gap: var(--space-sm); }
-.checkbox-field input { width: 1.05rem; height: 1.05rem; flex: 0 0 auto; accent-color: var(--vi-ink); }
+.checkbox-field input { width: 1.05rem; height: 1.05rem; flex: 0 0 auto; accent-color: var(--vi-accent); }
 .checkbox-field label { cursor: pointer; font-size: 0.8rem; }
 
 .entry-card {
@@ -41,11 +41,11 @@
   transition: border-color 140ms ease, box-shadow 140ms ease;
 }
 .entry-card:hover { border-color: var(--vi-border-strong); }
-.entry-card[open] { border-color: #d5d5d1; box-shadow: var(--shadow-panel); }
+.entry-card[open] { border-color: var(--vi-border-strong); box-shadow: var(--shadow-panel); }
 .entry-card > summary { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto; min-height: 3.65rem; align-items: center; gap: var(--space-sm); padding: 0.85rem 1rem; cursor: pointer; list-style: none; }
 .entry-card > summary::-webkit-details-marker { display: none; }
 .entry-card > summary::after { display: grid; width: 1.7rem; height: 1.7rem; place-items: center; border-radius: 50%; background: var(--vi-surface); color: var(--vi-muted-ink); content: "+"; font-size: 1rem; }
-.entry-card[open] > summary { border-bottom: 1px solid var(--vi-border); background: #fdfdfc; }
+.entry-card[open] > summary { border-bottom: 1px solid var(--vi-border); background: color-mix(in srgb, var(--vi-elevated) 78%, var(--vi-surface)); }
 .entry-card[open] > summary::after { content: "−"; }
 .entry-card > summary span { overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .entry-card > summary small { overflow: hidden; color: var(--vi-muted-ink); font-size: 0.75rem; text-overflow: ellipsis; white-space: nowrap; }
@@ -64,7 +64,7 @@
   padding: 1.1rem;
   border: 1px solid var(--vi-border);
   border-radius: var(--vi-radius-lg);
-  background: rgb(255 255 255 / 0.55);
+  background: color-mix(in srgb, var(--vi-elevated) 55%, transparent);
 }
 .collection-fieldset > legend, .highlights-editor > legend, .template-picker > legend { padding-inline: var(--space-xs); font-size: 0.8rem; font-weight: 680; }
 .entry-card-body .highlights-editor { padding: 1rem 0 0; border: 0; border-top: 1px solid var(--vi-border); border-radius: 0; background: transparent; }
@@ -73,16 +73,16 @@
 .add-outcome { justify-self: start; min-height: 2.75rem; }
 
 .range-control { display: grid; grid-template-columns: 1fr 4.5rem; min-height: 2.75rem; align-items: center; gap: var(--space-md); }
-.range-control input { padding: 0; accent-color: var(--vi-ink); }
+.range-control input { padding: 0; accent-color: var(--vi-accent); }
 .range-control output { padding: 0.38rem 0.5rem; border: 1px solid var(--vi-border); border-radius: var(--vi-radius-sm); background: var(--vi-elevated); text-align: center; font-size: 0.76rem; font-variant-numeric: tabular-nums; }
 
 .template-picker { grid-template-columns: repeat(3, 1fr); background: transparent; }
 .template-picker > legend { grid-column: 1 / -1; }
 .template-option { position: relative; display: grid; min-height: 8.75rem; padding: 0.75rem; border: 1px solid var(--vi-border); border-radius: var(--vi-radius-md); background: var(--vi-elevated); cursor: pointer; overflow: hidden; }
-.template-option::before { width: 3.55rem; height: 4.4rem; margin-bottom: 0.7rem; border: 1px solid var(--vi-border); border-top: 0.35rem solid var(--vi-ink); border-radius: 0.16rem; background: repeating-linear-gradient(to bottom, transparent 0 0.42rem, #e8e8e5 0.42rem 0.48rem); box-shadow: 0 3px 8px rgb(0 0 0 / 0.06); content: ""; }
-.template-option:nth-of-type(2)::before { border-top-width: 0.12rem; border-top-color: var(--vi-accent); background: repeating-linear-gradient(to bottom, transparent 0 0.5rem, #e8e8e5 0.5rem 0.56rem); }
-.template-option:nth-of-type(3)::before { height: 4rem; background: repeating-linear-gradient(to bottom, transparent 0 0.32rem, #e8e8e5 0.32rem 0.37rem); }
-.template-option input { position: absolute; top: var(--space-sm); right: var(--space-sm); accent-color: var(--vi-ink); }
+.template-option::before { width: 3.55rem; height: 4.4rem; margin-bottom: 0.7rem; border: 1px solid var(--vi-paper-line); border-top: 0.35rem solid var(--vi-paper-ink); border-radius: 0.16rem; background: repeating-linear-gradient(to bottom, var(--vi-paper) 0 0.42rem, var(--vi-paper-line) 0.42rem 0.48rem); box-shadow: 0 3px 8px rgb(0 0 0 / 0.1); content: ""; color-scheme: light; }
+.template-option:nth-of-type(2)::before { border-top-width: 0.12rem; border-top-color: var(--vi-accent); background: repeating-linear-gradient(to bottom, var(--vi-paper) 0 0.5rem, var(--vi-paper-line) 0.5rem 0.56rem); }
+.template-option:nth-of-type(3)::before { height: 4rem; background: repeating-linear-gradient(to bottom, var(--vi-paper) 0 0.32rem, var(--vi-paper-line) 0.32rem 0.37rem); }
+.template-option input { position: absolute; top: var(--space-sm); right: var(--space-sm); accent-color: var(--vi-accent); }
 .template-option span { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.18rem; }
 .template-option small { color: var(--vi-muted-ink); font-size: 0.7rem; line-height: 1.35; }
 .template-option.selected { border-color: color-mix(in srgb, var(--vi-accent) 60%, var(--vi-border)); background: var(--vi-accent-soft); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--vi-accent) 35%, transparent); }

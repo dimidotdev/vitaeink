@@ -1,4 +1,4 @@
-import { formatDateRange, formatMonth, safeExternalUrl, sectionLabel, visibleUrl } from '../../domain/presentation'
+import { credentialLabel, formatDateRange, formatMonth, safeExternalUrl, sectionLabel, visibleUrl } from '../../domain/presentation'
 import type { ResumeDocument } from '../../domain/resume'
 import {
   isRenderableCertification,
@@ -83,7 +83,7 @@ export const CertificationsSection = ({ document }: SectionProps) => {
       return (
         <article className="resume-entry certification-entry" key={entry.id}>
           <div className="entry-heading"><h3>{entry.name}</h3><p className="entry-date">{formatMonth(entry.date, document.settings.locale)}</p></div>
-          <p className="entry-context"><strong>{entry.issuer}</strong>{entry.credentialId && <> · ID {entry.credentialId}</>}{href && <> · <a href={href}>Credential</a></>}</p>
+          <p className="entry-context"><strong>{entry.issuer}</strong>{entry.credentialId && <> · ID {entry.credentialId}</>}{href && <> · <a href={href}>{credentialLabel(document.settings.locale)}</a></>}</p>
         </article>
       )
     })}

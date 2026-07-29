@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createBlankResume } from '../domain/factories'
 import { createSampleResume } from '../domain/sampleResume'
 import type { ResumeDocument } from '../domain/resume'
+import type { MessageKey } from '../i18n/messages'
 import { loadResume, saveResume } from '../storage/resumeRepository'
 
 export type SaveStatus = 'loading' | 'saving' | 'saved' | 'error'
@@ -10,17 +11,17 @@ export type DocumentUpdater = (draft: ResumeDocument) => void
 interface ResumeDocumentState {
   document: ResumeDocument
   status: SaveStatus
-  error: string | undefined
+  error: MessageKey | undefined
   update: (updater: DocumentUpdater) => void
   replace: (document: ResumeDocument) => void
   restoreSample: () => void
-  startBlank: () => void
+  startBlank: (title?: string) => void
 }
 
 export const useResumeDocument = (): ResumeDocumentState => {
   const [document, setDocument] = useState<ResumeDocument>(createSampleResume)
   const [status, setStatus] = useState<SaveStatus>('loading')
-  const [error, setError] = useState<string>()
+  const [error, setError] = useState<MessageKey>()
   const [hydrationComplete, setHydrationComplete] = useState(false)
   const hydrated = useRef(false)
   const changedBeforeHydration = useRef(false)
@@ -43,7 +44,8 @@ export const useResumeDocument = (): ResumeDocumentState => {
         storageAvailable.current = false
         setHydrationComplete(true)
         setStatus('error')
-        setError(reason instanceof Error ? reason.message : 'Local storage could not be opened.')
+        console.error('[VitaeInk storage open]', reason)
+        setError('storage.openError')
       })
     return () => { active = false }
   }, [])
@@ -61,7 +63,8 @@ export const useResumeDocument = (): ResumeDocumentState => {
       .catch((reason: unknown) => {
         if (saveSequence.current !== sequence) return
         setStatus('error')
-        setError(reason instanceof Error ? reason.message : 'This resume could not be saved.')
+        console.error('[VitaeInk storage save]', reason)
+        setError('storage.saveError')
       })
     return undefined
   }, [document, hydrationComplete])
@@ -100,6 +103,10 @@ export const useResumeDocument = (): ResumeDocumentState => {
     update,
     replace,
     restoreSample: useCallback(() => { replace(createSampleResume()) }, [replace]),
-    startBlank: useCallback(() => { replace(createBlankResume()) }, [replace]),
+    startBlank: useCallback((title?: string) => {
+      const blank = createBlankResume()
+      if (title) blank.metadata.title = title
+      replace(blank)
+    }, [replace]),
   }
 }
