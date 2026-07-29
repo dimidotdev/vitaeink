@@ -21,12 +21,15 @@ const extractPdfPages = async (path: string): Promise<string[]> => {
 const extractPdfText = async (path: string): Promise<string> => (await extractPdfPages(path)).join('\n')
 
 const importDocument = async (page: Page, document: ReturnType<typeof createSampleResume>, accept = true): Promise<void> => {
-  page.once('dialog', async (dialog) => { await (accept ? dialog.accept() : dialog.dismiss()) })
-  await page.getByLabel('Import resume JSON').setInputFiles({
+  const dialogPromise = page.waitForEvent('dialog')
+  const uploadPromise = page.getByLabel('Import resume JSON').setInputFiles({
     name: 'resume.json',
     mimeType: 'application/json',
     buffer: Buffer.from(JSON.stringify(document)),
   })
+  const dialog = await dialogPromise
+  await (accept ? dialog.accept() : dialog.dismiss())
+  await uploadPromise
 }
 
 test('edits the sample and persists it locally', async ({ page }) => {
